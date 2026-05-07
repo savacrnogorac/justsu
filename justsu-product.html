@@ -703,53 +703,6 @@ nav{position:fixed;top:29px;left:0;right:0;z-index:500;display:flex;align-items:
   }
   </script>
 
-
-  <!-- Shopify Integration -->
-  <script type="text/javascript">
-  var _shopifyClient = null;
-
-  function _loadShopifySDK(cb) {
-    if (window.ShopifyBuy && window.ShopifyBuy.UI) { cb(); return; }
-    var s = document.createElement('script');
-    s.src = 'https://sdks.shopifycdn.com/buy-button/latest/buy-button-storefront.min.js';
-    s.onload = cb;
-    document.head.appendChild(s);
-  }
-
-  function _initClient(cb) {
-    if (_shopifyClient) { cb(_shopifyClient); return; }
-    _loadShopifySDK(function() {
-      _shopifyClient = ShopifyBuy.buildClient({
-        domain: 'qz1qsh-jn.myshopify.com',
-        storefrontAccessToken: '84db1e772344b459f7dc552e26778f58'
-      });
-      cb(_shopifyClient);
-    });
-  }
-
-  function addToCartMain(btn) {
-    var orig = btn.textContent;
-    btn.textContent = '...';
-    btn.disabled = true;
-    _initClient(function(client) {
-      client.product.fetch('9364125810934').then(function(product) {
-        var variantId = product.variants[0].id;
-        client.checkout.create().then(function(checkout) {
-          client.checkout.addLineItems(checkout.id, [{variantId: variantId, quantity: 1}]).then(function(co) {
-            btn.textContent = '✓ Added!';
-            btn.disabled = false;
-            setTimeout(function() { btn.textContent = orig; }, 1800);
-            window.open(co.webUrl, '_blank');
-          });
-        });
-      }).catch(function() {
-        btn.textContent = orig;
-        btn.disabled = false;
-      });
-    });
-  }
-  </script>
-
 </head>
 <body>
 
